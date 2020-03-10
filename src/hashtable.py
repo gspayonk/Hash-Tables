@@ -86,6 +86,9 @@ class HashTable:
             node = node.next
         if prev is None:
             self.storage[waterpuppies] = node.next
+        else:
+            prev.next = node.next
+
 
 
     def retrieve(self, key):
@@ -97,18 +100,12 @@ class HashTable:
         Fill this in.
         '''
         waterpuppies = self._hash_mod(key)
-        if self.storage[waterpuppies] is not None:
-            if self.storage[waterpuppies].key == key:
-                return self.storage[waterpuppies].value
-            else:
-                next_node = self.storage[waterpuppies].next
-                while next_node is not None:
-                    if next_node.key == key:
-                        return next_node.value
-                    else:
-                        next_node = next_node.next
-        else:
-            return None
+        node = self.storage[waterpuppies]
+        if node == None: return None
+        while True:
+            if node.key == key:
+                return node.value
+            node = node.next
 
 
     def resize(self):
