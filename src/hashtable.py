@@ -32,7 +32,10 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        # hash = 123
+        # for x in key:
+        #     hash = ((hash<<5)+ hash) + ord(x)
+        # return hash
 
 
     def _hash_mod(self, key):
@@ -51,7 +54,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        waterpuppies = self._hash_mod(key)
+        #storing the value with given key
+        node = self.storage[waterpuppies]
+
+        if node is None or node.key == key:
+            self.storage[waterpuppies] = LinkedPair(key,value)
+        else:
+            while True:
+                if node.next is None or node.key == key:
+                    node.next = LinkedPair(key,value)
+                    break
+            node = node.next
 
 
 
@@ -63,7 +77,15 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        waterpuppies = self._hash_mod(key)
+        node = self.storage[waterpuppies]
+        prev = None
+
+        while node.next is not None and node.key != key:
+            prev = node
+            node = node.next
+        if prev is None:
+            self.storage[waterpuppies] = node.next
 
 
     def retrieve(self, key):
@@ -74,7 +96,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        waterpuppies = self._hash_mod(key)
+        if self.storage[waterpuppies] is not None:
+            if self.storage[waterpuppies].key == key:
+                return self.storage[waterpuppies].value
+            else:
+                next_node = self.storage[waterpuppies].next
+                while next_node is not None:
+                    if next_node.key == key:
+                        return next_node.value
+                    else:
+                        next_node = next_node.next
+        else:
+            return None
 
 
     def resize(self):
@@ -84,7 +118,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        previous_size = self.storage
+        self.storage = [None] * self.capacity
+        for p in previous_size:
+            node = p
+            while node is not None:
+                self.insert(node.key, node.value)
+                node = node.next
 
 
 
