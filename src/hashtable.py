@@ -37,7 +37,6 @@ class HashTable:
         #     hash = ((hash<<5)+ hash) + ord(x)
         # return hash
 
-
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
@@ -45,19 +44,15 @@ class HashTable:
         '''
         return self._hash(key) % self.capacity
 
-
     def insert(self, key, value):
         '''
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
         Fill this in.
         '''
         waterpuppies = self._hash_mod(key)
         #storing the value with given key
         node = self.storage[waterpuppies]
-
         if node is None or node.key == key:
             self.storage[waterpuppies] = LinkedPair(key,value)
         else:
@@ -67,14 +62,10 @@ class HashTable:
                     break
             node = node.next
 
-
-
     def remove(self, key):
         '''
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
         Fill this in.
         '''
         waterpuppies = self._hash_mod(key)
@@ -89,30 +80,25 @@ class HashTable:
         else:
             prev.next = node.next
 
-
-
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
         Fill this in.
         '''
         waterpuppies = self._hash_mod(key)
         node = self.storage[waterpuppies]
+        #Returns None if the key is not found.
         if node == None: return None
         while True:
             if node.key == key:
                 return node.value
             node = node.next
 
-
     def resize(self):
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
         self.capacity *= 2
@@ -123,8 +109,6 @@ class HashTable:
             while node is not None:
                 self.insert(node.key, node.value)
                 node = node.next
-
-
 
 if __name__ == "__main__":
     ht = HashTable(2)
