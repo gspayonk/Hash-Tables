@@ -32,8 +32,10 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
-
+        # hash = 123
+        # for x in key:
+        #     hash = ((hash<<5)+ hash) + ord(x)
+        # return hash
 
     def _hash_mod(self, key):
         '''
@@ -42,51 +44,71 @@ class HashTable:
         '''
         return self._hash(key) % self.capacity
 
-
     def insert(self, key, value):
         '''
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
         Fill this in.
         '''
-        pass
-
-
+        waterpuppies = self._hash_mod(key)
+        #storing the value with given key
+        node = self.storage[waterpuppies]
+        if node is None or node.key == key:
+            self.storage[waterpuppies] = LinkedPair(key,value)
+        else:
+            while True:
+                if node.next is None or node.key == key:
+                    node.next = LinkedPair(key,value)
+                    break
+            node = node.next
 
     def remove(self, key):
         '''
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
         Fill this in.
         '''
-        pass
+        waterpuppies = self._hash_mod(key)
+        node = self.storage[waterpuppies]
+        prev = None
 
+        while node.next is not None and node.key != key:
+            prev = node
+            node = node.next
+        if prev is None:
+            self.storage[waterpuppies] = node.next
+        else:
+            prev.next = node.next
 
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
         Fill this in.
         '''
-        pass
-
+        waterpuppies = self._hash_mod(key)
+        node = self.storage[waterpuppies]
+        #Returns None if the key is not found.
+        if node == None: return None
+        while True:
+            if node.key == key:
+                return node.value
+            node = node.next
 
     def resize(self):
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
-        pass
-
-
+        self.capacity *= 2
+        previous_size = self.storage
+        self.storage = [None] * self.capacity
+        for p in previous_size:
+            node = p
+            while node is not None:
+                self.insert(node.key, node.value)
+                node = node.next
 
 if __name__ == "__main__":
     ht = HashTable(2)
